@@ -1,18 +1,34 @@
 #!/usr/bin/python
-import string,cgi,time
 import os
+import cgi
+import sys
+import time
+import string
+import signal
 import subprocess
-from os import curdir, sep
+from os import sep
 from subprocess import call
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
-PORT_NUMBER = 8080
+PORT_NUMBER = 80
 proc = None
 CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__)) + sep
 
+def end_it_all():
+    print('^C received, shutting down the web server and LED display process')
+    server.socket.close()
+    if proc != None:
+        print("killing process")
+        proc.kill()
+
+# Handle signal termination
+def sigterm_handler(_signo, _stack_frame):
+    end_it_all()
+    sys.exit(0)
+
 #This class will handles any incoming request from
 #the browser
-class signServerHandler(BaseHTTPRequestHandler):
+class SignServerHandler(BaseHTTPRequestHandler):
 
     #Handler for the GET requests
     def do_GET(self):
@@ -70,8 +86,7 @@ class signServerHandler(BaseHTTPRequestHandler):
             print(command)
 
             proc = subprocess.Popen(command)
-            f = open(curdir + sep + "/index.html")
-            self.wfile.write(f.read())
+            self.wfile.write("SUCCESS")
         except  Exception, err:
             print Exception, err
             print("FAILED TO EXECUTE SHELL CALL")
@@ -84,12 +99,12 @@ class signServerHandler(BaseHTTPRequestHandler):
 try:
     #Create a web server and define the handler to manage the
     #incoming request
-    server = HTTPServer(('', PORT_NUMBER), signServerHandler)
+    signal.signal(signal.SIGTERM, sigterm_handler)
+    server = HTTPServer(('', PORT_NUMBER), SignServerHandler)
     print('Started httpserver on port ' , PORT_NUMBER)
 
     #Wait self.pathforever for incoming htto requests
     server.serve_forever()
 
 except KeyboardInterrupt:
-    print('^C received, shutting down the web server')
-    server.socket.close()
+    end_it_all()

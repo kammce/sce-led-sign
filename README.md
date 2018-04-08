@@ -1,6 +1,6 @@
 # SCE LED Sign
 
-## Setup:
+## Setup
 
 1. Connect LED matrix Bonnet to RPI
 2. Connect 5V 10A barrel jack power supply to Bonnet (do not supply power to usb port)
