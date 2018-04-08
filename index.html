@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Charle's and Khalil's LED light show</title>
+    <style>
+    html, body {
+        /* font-family: Arial, Helvetica, sans-serif; */
+        /* font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 3vh;
+        color: white;
+        background: #000;
+    }
+    .border-curve {
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+    .thin-grey-border {
+        border: 1px solid #ccc;
+    }
+    .full-width {
+        padding: 0 5% 0 5%;
+        text-align: left;
+        width: 800px;
+        max-width: 90%;
+        margin: auto;
+    }
+    input[type=color] {
+        height: 30px;
+        border-radius: 5px;
+        width: 100%;
+    }
+    input[type=text] {
+        height: 30px;
+        border-radius: 5px;
+        width: 100%;
+        font-size: 8vh;
+        height: 8vh;
+        background: black;
+        color: white;
+        border-color:white;
+        font-family: 'Courier New', Courier, monospace;
+    }
+    input[type=range] {
+        width: 100%;
+    }
+    #send {
+        width: 100%;
+        border-radius: 5px;
+        background-color: #28a745;
+        border-color: #28a745;
+        color: white;
+        font-size: 3vh;
+    }
+    </style>
+</head>
+<body>
+    <form action="/" method="POST">
+        <p style="font-size:5vh; text-align:center;">Display Sign Control Interface</p>
+        <div class="full-width">
+            <input id="text" name="text" type="text" placeholder="Enter Text" class="border-curve thin-grey-border">
+        </div>
+        <div class="full-width">
+            <p>Brightness: <span id="brightness-value" style="color:#ccc">50%</span></p>
+            <input id="brightness" name="brightness" type="range" step="1" min="0" max="100">
+        </div>
+        <div class="full-width">
+            <p>Background: <span id="background-value" style="color:#ccc"></span></p>
+            <input id="background" name="background" type="color" value="#0000ff">
+            <p>Font: <span id="font-value" style="color:#ccc"></span></p>
+            <input id="font" name="font" type="color" value="#00ff00">
+            <p>Border: <span id="border-value" style="color:#ccc"></span></p>
+            <input id="border" name="border" type="color" value="#ff0000">
+        </div>
+        <div class="full-width">
+            <p>Scroll Speed: <span id="speed-value" style="color:#ccc">85 px/vsync</span></p>
+            <input id="speed" name="speed" type="range" value="15" step="1" min="0" max="99">
+        </div>
+        <div class="full-width">
+            <button id="send" name="send">Send</button>
+        </div>
+    </form>
+</body>
+<script>
+    document.querySelector("#send").onclick = (e) =>
+    {
+        e.preventDefault();
+        var form = document.querySelector('form');
+        var data = new FormData(form);
+        var req = new XMLHttpRequest();
+        req.open("POST", '/', true);
+        req.send(data);
+    }
+    document.querySelector("#brightness").onchange = () => {
+        document.querySelector("#brightness-value").innerHTML =
+            document.querySelector("#brightness").value + "%";
+    }
+    document.querySelector("#background").onchange = () => {
+        document.querySelector("#background-value").innerHTML =
+            document.querySelector("#background").value;
+    }
+    document.querySelector("#font").onchange = () => {
+        document.querySelector("#font-value").innerHTML =
+            document.querySelector("#font").value;
+    }
+    document.querySelector("#border").onchange = () => {
+        document.querySelector("#border-value").innerHTML =
+            document.querySelector("#border").value;
+    }
+    document.querySelector("#speed").onchange = () => {
+        document.querySelector("#speed-value").innerHTML =
+            100-parseInt(document.querySelector("#speed").value) + " px/vsync";
+    }
+
+</script>
+</html>
