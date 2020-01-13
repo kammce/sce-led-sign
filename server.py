@@ -74,7 +74,7 @@ class SignServerHandler(BaseHTTPRequestHandler):
                 proc.kill()
 
             command = [
-                CURRENT_DIRECTORY + "sce_sign",
+                CURRENT_DIRECTORY + "sce_sign.exe",
                 "--set-text", postvars['text'][0],
                 "--set-brightness", postvars['brightness'][0],
                 "--set-speed", postvars['speed'][0],
