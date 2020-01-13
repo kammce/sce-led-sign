@@ -1,0 +1,44 @@
+
+Hi future students and/or SCE officers!
+
+So the sign isn't working. Bummer. Let's check a few things first:
+
+1. If Raspbian loads but the keyboard doesn't work and the mouse does, the installation
+   may have gotten corrupted. Download the latest Raspbian OS and install to a NEW MicroSD
+   card. On Windows you can use a program called "BalenaEtcher" to write a Raspbian image
+   to an SD card directly from the Raspbian distribution ZIP file you downloaded.
+
+Configuration after installing Raspbian:
+
+1. Blacklist the bcm_2835 sound module:
+
+   cat <<EOF | sudo tee /etc/modprobe.d/blacklist-rgb-matrix.conf
+   blacklist snd_bcm2835
+   EOF
+   sudo update-initramfs -u
+
+Initial setup
+
+2. Try the LED panel control library demo program first. Look at this directory:
+
+   ~/sce-led-sign/src/third-party/rpi-rgb-led-matrix  
+   
+   This is a git repository for the LED panel control library we use.
+   Be sure to updated it to the latest version and try running the demo program to verify 
+   things are working:
+
+   cd examples-api-use
+   sudo ./demo -D0 --led-gpio-mapping=adafruit-hat --led-cols=128
+
+   This should show a spinning cube in the middle of the display.
+   
+3. Try the sign application
+
+   sudo ./sce-sign --set-font-filename fonts/9x18.bdf --set-text "Test message"
+
+   Hopefully it will work!
+
+
+
+
+

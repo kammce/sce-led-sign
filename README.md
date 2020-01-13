@@ -8,7 +8,7 @@
 2. Pull/Download repo to RPI
 3. Build executable (may need to install gcc)
 
-    make sce_sign
+    make
 
 4. Run server (python is pre-installed, no need to install)
 
@@ -21,10 +21,15 @@
 
 Add this line to your `/etc/rc.local` file
 
-    sudo python /<path-to-sign-repo>/server.py
+    sudo python /<path-to-sign-repo>/server.py &
+
+Typical Example:
+
+    sudo python /home/pi/sce-led-sign/server.py &
 
 ## To setup as wireless AP
 
 Follow these instructions here: 
 
 https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md
+
